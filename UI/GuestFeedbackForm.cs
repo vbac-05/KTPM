@@ -165,7 +165,7 @@ namespace QLThuocWin.UI
             //  - set thoiGian = now
             //  - insert PhanHoi
             return true; // giả lập thành công
-        } //vbac dep trai
+        } //vbac dep trai hehe
         
     }
 }
