@@ -1,0 +1,6 @@
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.csproj.AssemblyReference.cache
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.GeneratedMSBuildEditorConfig.editorconfig
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.AssemblyInfoInputs.cache
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.AssemblyInfo.cs
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.csproj.CoreCompileInputs.cache
+/workspaces/KTPM/obj/Debug/net8.0-windows/QLThuocWin.sourcelink.json
