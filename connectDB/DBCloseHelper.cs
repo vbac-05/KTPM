@@ -1,15 +1,14 @@
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient; // TODO: Nếu đổi DBMS, đổi sang MySql.Data.MySqlClient hoặc tương ứng.
 
 namespace connectDB
 {
     public static class DBCloseHelper
     {
         /// <summary>
-        /// Đóng SqlDataReader nếu không null và bắt mọi Exception.
-        /// Tương đương close(ResultSet rs) trong Java.
+        /// Đóng SqlDataReader nếu không null và bắt lỗi.
         /// </summary>
-        public static void Close(SqlDataReader reader)
+        public static void Close(SqlDataReader reader) // TODO: Nếu đổi DBMS, đổi sang MySqlDataReader hoặc tương ứng.
         {
             if (reader != null)
             {
@@ -17,7 +16,7 @@ namespace connectDB
                 {
                     reader.Close();
                 }
-                catch (Exception e) // SqlException kế thừa Exception
+                catch (Exception e)
                 {
                     Console.Error.WriteLine("Lỗi khi đóng SqlDataReader:");
                     Console.Error.WriteLine(e);
@@ -27,15 +26,14 @@ namespace connectDB
 
         /// <summary>
         /// Đóng SqlCommand nếu không null.
-        /// Tương đương close(Statement stmt) trong Java.
         /// </summary>
-        public static void Close(SqlCommand cmd)
+        public static void Close(SqlCommand cmd) // TODO: Nếu đổi DBMS, đổi sang MySqlCommand hoặc tương ứng.
         {
             if (cmd != null)
             {
                 try
                 {
-                    cmd.Dispose(); // SqlCommand không có .Close(), dùng Dispose()
+                    cmd.Dispose(); // TODO: Giữ nguyên; MySqlCommand cũng hỗ trợ Dispose().
                 }
                 catch (Exception e)
                 {
@@ -47,9 +45,8 @@ namespace connectDB
 
         /// <summary>
         /// Đóng SqlConnection nếu không null và chưa đóng.
-        /// Tương đương close(Connection conn) trong Java.
         /// </summary>
-        public static void Close(SqlConnection conn)
+        public static void Close(SqlConnection conn) // TODO: Nếu đổi DBMS, đổi sang MySqlConnection hoặc tương ứng.
         {
             if (conn != null)
             {
@@ -59,7 +56,7 @@ namespace connectDB
                     {
                         conn.Close();
                     }
-                    conn.Dispose(); // giải phóng luôn
+                    conn.Dispose();
                 }
                 catch (Exception e)
                 {
@@ -70,11 +67,9 @@ namespace connectDB
         }
 
         /// <summary>
-        /// Đóng đồng thời SqlDataReader, SqlCommand và SqlConnection.
-        /// Thứ tự: Reader → Command → Connection.
-        /// Tương đương closeAll(ResultSet, Statement, Connection) trong Java.
+        /// Đóng đồng thời Reader → Command → Connection.
         /// </summary>
-        public static void CloseAll(SqlDataReader reader, SqlCommand cmd, SqlConnection conn)
+        public static void CloseAll(SqlDataReader reader, SqlCommand cmd, SqlConnection conn) // TODO: Nếu đổi DBMS, sửa tất cả kiểu tương ứng.
         {
             Close(reader);
             Close(cmd);
@@ -82,13 +77,13 @@ namespace connectDB
         }
 
         /// <summary>
-        /// Đóng SqlCommand và SqlConnection.
-        /// Tương đương closeAll(Statement, Connection) trong Java.
+        /// Đóng Command → Connection.
         /// </summary>
-        public static void CloseAll(SqlCommand cmd, SqlConnection conn)
+        public static void CloseAll(SqlCommand cmd, SqlConnection conn) // TODO: Nếu đổi DBMS, sửa tất cả kiểu tương ứng.
         {
             Close(cmd);
             Close(conn);
         }
     }
 }
+
