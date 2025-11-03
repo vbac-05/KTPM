@@ -1,10 +1,10 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-// using QLThuocWin.Services; // TODO: ĐỔI: namespace Service/DAO thực tế của bạn
-// using QLThuocWin.Models;   // TODO: ĐỔI: nếu cần entity KhachHang/PhanHoi
+// using QLThuocApp.Services; // TODO: ĐỔI: namespace Service/DAO thực tế của bạn
+// using QLThuocApp.Entities;   // TODO: ĐỔI: nếu cần entity KhachHang/PhanHoi
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class GuestFeedbackForm : Form
     {

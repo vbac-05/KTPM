@@ -2,7 +2,7 @@ using System;
 using System.Globalization; // Để dùng CultureInfo
 using System.Text.RegularExpressions; // Để dùng Regex
 
-namespace QLThuocWin.Utils
+namespace QLThuocApp.Utils
 {
     /**
      * Validator.cs (Tương đương Validator.java)

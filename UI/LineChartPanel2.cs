@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class LineChartPanel2 : UserControl
     {

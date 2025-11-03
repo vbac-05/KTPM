@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-// using QLThuocWin.Services; // TODO: bật khi bạn có tầng Service thực
+// using QLThuocApp.Services; // TODO: bật khi bạn có tầng Service thực
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class LoginForm : Form
     {

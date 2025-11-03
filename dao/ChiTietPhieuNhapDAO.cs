@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp ChiTietPhieuNhap
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp ChiTietPhieuNhap
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     public class ChiTietPhieuNhapDAO
     {

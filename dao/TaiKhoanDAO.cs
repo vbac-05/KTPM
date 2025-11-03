@@ -1,8 +1,9 @@
 using System;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp TaiKhoan
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp TaiKhoan
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// Chứa các phương thức truy vấn bảng TaiKhoan (Phiên bản C# cho MySQL).

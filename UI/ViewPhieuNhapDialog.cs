@@ -3,7 +3,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
 
     public class ViewPhieuNhapDialog : Form

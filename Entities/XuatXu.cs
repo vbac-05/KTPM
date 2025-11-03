@@ -12,7 +12,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLThuocApp.Core.Models
+namespace QLThuocApp.Entities
 {
     // XuatXu.cs
     [Table("XuatXu")] // ← THÊM MỚI: xác định tên bảng tương ứng trong DB

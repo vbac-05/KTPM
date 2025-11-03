@@ -1,159 +1,468 @@
-using System;
+using System;using System;using System;
+
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
+
+using System.ComponentModel;using System.Collections.Generic;using System.Collections.Generic;
+
 using System.Drawing;
-using System.Windows.Forms;
-using QLThuocWin.Models;
-using QLThuocWin.Services;
 
-namespace QLThuocWin.UI
-{
-    public class AddPhieuNhapDialog : Form
+using System.Globalization;using System.ComponentModel;using System.ComponentModel;
+
+using System.Linq;
+
+using System.Windows.Forms;using System.Drawing;using System.Globalization;
+
+using QLThuocApp.Entities;
+
+using System.Globalization;using System.Linq;
+
+namespace QLThuocApp.UI
+
+{using System.Linq;using System.Drawing;
+
+    /// <summary>
+
+    /// Dialog thêm hóa đơn mớiusing System.Windows.Forms;using System.Windows.Forms;
+
+    /// </summary>
+
+    public class AddHoaDonDialog : Formusing QLThuocApp.Entities;using QLThuocApp.Entities;
+
     {
-        // ================== KHAI BÁO SERVICE/DAO ==================
-        // Bạn có thể đổi sang DAO/Repository tuỳ dự án:
-        // VD: private readonly NhaCungCapDAO _ncc = new NhaCungCapDAO();
-        // HOẶC dùng DI qua constructor (mục cuối file)
-        private readonly NhaCungCapService _ncc = new NhaCungCapService();               // TODO: ĐỔI sang Service/DAO thật của bạn
-        private readonly PhieuNhapService _pn = new PhieuNhapService();                  // TODO: ĐỔI sang Service/DAO thật của bạn
-        private readonly ThuocService _thuoc = new ThuocService();                       // TODO: ĐỔI sang Service/DAO thật của bạn
-        private readonly ChiTietPhieuNhapService _ct = new ChiTietPhieuNhapService();    // TODO: ĐỔI sang Service/DAO thật của bạn
 
-        // --- Khu vực "phiếu nhập"
-        TextBox txtIDPN = new TextBox { ReadOnly = true };
-        TextBox txtThoiGian = new TextBox { ReadOnly = true };
-        TextBox txtIDNV = new TextBox();
-        TextBox txtNCC = new TextBox();                  // ô gõ để gợi ý
-        ComboBox comboNCC = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList };
-        Button btnThemNCC = new Button { Text = "   Thêm nhà cung cấp" };
+        // TODO: Inject DAO/Service thực tế
 
-        // --- Khu vực "thông tin thuốc"
-        TextBox txtTenThuoc = new TextBox();
-        TextBox txtThanhPhan = new TextBox();
-        TextBox txtDonViTinh = new TextBox();
-        TextBox txtDanhMuc = new TextBox();
-        TextBox txtXuatXu = new TextBox();
-        TextBox txtSoLuong = new TextBox();
-        TextBox txtGiaNhap = new TextBox();
-        TextBox txtDonGia = new TextBox();
-        TextBox txtHanSuDung = new TextBox(); // dd/MM/yyyy
-        Button btnThemThuoc = new Button { Text = "  Thêm thuốc" };
-        Button btnXoaThuoc = new Button { Text = "   Xóa thuốc" };
+        // private readonly IHoaDonService _hoaDonService;
 
-        // --- Bảng & tổng tiền
-        DataGridView grid = new DataGridView();
-        BindingList<RowThuoc> viewRows = new BindingList<RowThuoc>();
-        Label lblTongTien = new Label { Text = "Tổng tiền: 0" };
+        // private readonly IKhachHangService _khachHangService;namespace QLThuocApp.UInamespace QLThuocApp.UI
 
-        // --- Nút Lưu/Hủy
-        Button btnLuu = new Button { Text = "    Lưu" };
-        Button btnHuy = new Button { Text = "    Hủy" };
+        // private readonly IThuocService _thuocService;
 
-        // --- Dữ liệu tạm (giống Java)
-        List<Thuoc> listThuocTam = new List<Thuoc>();
-        List<ChiTietPhieuNhap> listChiTietTam = new List<ChiTietPhieuNhap>();
-        double tongTien = 0.0;
-        List<NhaCungCap> dsNCC = new List<NhaCungCap>();
+{{
 
-        // --- Row hiển thị trong grid
-        class RowThuoc
+        TextBox txtIDHD, txtThoiGian, txtIDNV, txtIDKH;
+
+        TextBox txtPhuongThuc, txtTrangThai;    /// <summary>    public class AddHoaDonDialog : Form
+
+        Label lblTongTien;
+
+        Button btnLuu, btnHuy;    /// Dialog thêm hóa đơn mới    {
+
+
+
+        public AddHoaDonDialog()    /// </summary>        // ================== KHAI BÁO SERVICE/DAO ==================
+
         {
-            public string Id { get; set; }
-            public string Ten { get; set; }
-            public int SL { get; set; }
-            public decimal GiaNhap { get; set; }
-            public decimal DonGia { get; set; }
-            public string HanSD { get; set; } // dd/MM/yyyy (hiển thị)
-        }
 
-        public AddPhieuNhapDialog()
-        {
-            Text = "Thêm phiếu nhập mới";
+            Text = "Thêm hóa đơn mới";    public class AddHoaDonDialog : Form        // Bạn có thể đổi sang DAO/Repository tuỳ dự án:
+
             StartPosition = FormStartPosition.CenterParent;
-            ClientSize = new Size(940, 520);
 
-            // ===== Layout bám sát Java =====
-            var root = new Panel { Dock = DockStyle.Fill };
-            Controls.Add(root);
+            ClientSize = new Size(500, 350);    {        // VD: private readonly NhaCungCapDAO _ncc = new NhaCungCapDAO();
+
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+
+            MaximizeBox = false;        // TODO: Inject DAO/Service thực tế        // HOẶC dùng DI qua constructor (mục cuối file)
+
+            MinimizeBox = false;
+
+        // private readonly IHoaDonService _hoaDonService;        private readonly NhaCungCapService _ncc = new NhaCungCapService();               // TODO: ĐỔI sang Service/DAO thật của bạn
+
+            var tbl = new TableLayoutPanel
+
+            {        // private readonly IKhachHangService _khachHangService;        private readonly PhieuNhapService _pn = new PhieuNhapService();                  // TODO: ĐỔI sang Service/DAO thật của bạn
+
+                Dock = DockStyle.Fill,
+
+                ColumnCount = 2,        // private readonly IThuocService _thuocService;        private readonly ThuocService _thuoc = new ThuocService();                       // TODO: ĐỔI sang Service/DAO thật của bạn
+
+                RowCount = 8,
+
+                Padding = new Padding(15)        private readonly ChiTietPhieuNhapService _ct = new ChiTietPhieuNhapService();    // TODO: ĐỔI sang Service/DAO thật của bạn
+
+            };
+
+            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));        TextBox txtIDHD, txtThoiGian, txtIDNV, txtIDKH;
+
+            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
+
+        TextBox txtPhuongThuc, txtTrangThai;        // --- Khu vực "phiếu nhập"
+
+            // Row 0: IDHD
+
+            tbl.Controls.Add(new Label { Text = "Mã hóa đơn:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 0);        Label lblTongTien;        TextBox txtIDPN = new TextBox { ReadOnly = true };
+
+            txtIDHD = new TextBox { Dock = DockStyle.Fill, ReadOnly = true };
+
+            tbl.Controls.Add(txtIDHD, 1, 0);        Button btnLuu, btnHuy;        TextBox txtThoiGian = new TextBox { ReadOnly = true };
+
+
+
+            // Row 1: Thời gian        TextBox txtIDNV = new TextBox();
+
+            tbl.Controls.Add(new Label { Text = "Thời gian:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 1);
+
+            txtThoiGian = new TextBox { Dock = DockStyle.Fill, ReadOnly = true };        public AddHoaDonDialog()        TextBox txtNCC = new TextBox();                  // ô gõ để gợi ý
+
+            tbl.Controls.Add(txtThoiGian, 1, 1);
+
+        {        ComboBox comboNCC = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList };
+
+            // Row 2: IDNV
+
+            tbl.Controls.Add(new Label { Text = "Mã nhân viên:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 2);            Text = "Thêm hóa đơn mới";        Button btnThemNCC = new Button { Text = "   Thêm nhà cung cấp" };
+
+            txtIDNV = new TextBox { Dock = DockStyle.Fill };
+
+            tbl.Controls.Add(txtIDNV, 1, 2);            StartPosition = FormStartPosition.CenterParent;
+
+
+
+            // Row 3: IDKH            ClientSize = new Size(500, 350);        // --- Khu vực "thông tin thuốc"
+
+            tbl.Controls.Add(new Label { Text = "Mã khách hàng:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 3);
+
+            txtIDKH = new TextBox { Dock = DockStyle.Fill };            FormBorderStyle = FormBorderStyle.FixedDialog;        TextBox txtTenThuoc = new TextBox();
+
+            tbl.Controls.Add(txtIDKH, 1, 3);
+
+            MaximizeBox = false;        TextBox txtThanhPhan = new TextBox();
+
+            // Row 4: Phương thức thanh toán
+
+            tbl.Controls.Add(new Label { Text = "Phương thức TT:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 4);            MinimizeBox = false;        TextBox txtDonViTinh = new TextBox();
+
+            txtPhuongThuc = new TextBox { Dock = DockStyle.Fill, PlaceholderText = "Tiền mặt, Chuyển khoản..." };
+
+            tbl.Controls.Add(txtPhuongThuc, 1, 4);        TextBox txtDanhMuc = new TextBox();
+
+
+
+            // Row 5: Trạng thái            var tbl = new TableLayoutPanel        TextBox txtXuatXu = new TextBox();
+
+            tbl.Controls.Add(new Label { Text = "Trạng thái:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 5);
+
+            txtTrangThai = new TextBox { Dock = DockStyle.Fill, Text = "Đã thanh toán" };            {        TextBox txtSoLuong = new TextBox();
+
+            tbl.Controls.Add(txtTrangThai, 1, 5);
+
+                Dock = DockStyle.Fill,        TextBox txtGiaNhap = new TextBox();
+
+            // Row 6: Tổng tiền
+
+            tbl.Controls.Add(new Label { Text = "Tổng tiền:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 6);                ColumnCount = 2,        TextBox txtDonGia = new TextBox();
+
+            lblTongTien = new Label { Text = "0", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = new Font(Font.FontFamily, 10, FontStyle.Bold) };
+
+            tbl.Controls.Add(lblTongTien, 1, 6);                RowCount = 8,        TextBox txtHanSuDung = new TextBox(); // dd/MM/yyyy
+
+
+
+            // Row 7: Buttons                Padding = new Padding(15)        Button btnThemThuoc = new Button { Text = "  Thêm thuốc" };
+
+            var pnlBtn = new FlowLayoutPanel { FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill };
+
+            btnHuy = new Button { Text = "Hủy", Width = 80 };            };        Button btnXoaThuoc = new Button { Text = "   Xóa thuốc" };
+
+            btnLuu = new Button { Text = "Lưu", Width = 80 };
+
+            pnlBtn.Controls.Add(btnHuy);            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+
+            pnlBtn.Controls.Add(btnLuu);
+
+            tbl.SetColumnSpan(pnlBtn, 2);            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));        // --- Bảng & tổng tiền
+
+            tbl.Controls.Add(pnlBtn, 0, 7);
+
+        DataGridView grid = new DataGridView();
+
+            Controls.Add(tbl);
+
+            // Row 0: IDHD        BindingList<RowThuoc> viewRows = new BindingList<RowThuoc>();
+
+            // Khởi tạo giá trị mặc định
+
+            GenerateIDHD();            tbl.Controls.Add(new Label { Text = "Mã hóa đơn:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 0);        Label lblTongTien = new Label { Text = "Tổng tiền: 0" };
+
+            txtThoiGian.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+
+            txtIDHD = new TextBox { Dock = DockStyle.Fill, ReadOnly = true };
+
+            // Events
+
+            btnLuu.Click += BtnLuu_Click;            tbl.Controls.Add(txtIDHD, 1, 0);        // --- Nút Lưu/Hủy
+
+            btnHuy.Click += (s, e) => Close();
+
+        }        Button btnLuu = new Button { Text = "    Lưu" };
+
+
+
+        private void GenerateIDHD()            // Row 1: Thời gian        Button btnHuy = new Button { Text = "    Hủy" };
+
+        {
+
+            // TODO: Lấy từ database để sinh ID tự động            tbl.Controls.Add(new Label { Text = "Thời gian:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 1);
+
+            // var lastID = _hoaDonService.GetLastID();
+
+            // txtIDHD.Text = GenerateNextID(lastID);            txtThoiGian = new TextBox { Dock = DockStyle.Fill, ReadOnly = true };        // --- Dữ liệu tạm (giống Java)
+
+            txtIDHD.Text = "HD" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
+        }            tbl.Controls.Add(txtThoiGian, 1, 1);        List<Thuoc> listThuocTam = new List<Thuoc>();
+
+
+
+        private void BtnLuu_Click(object sender, EventArgs e)        List<ChiTietPhieuNhap> listChiTietTam = new List<ChiTietPhieuNhap>();
+
+        {
+
+            // Validation            // Row 2: IDNV        double tongTien = 0.0;
+
+            if (string.IsNullOrWhiteSpace(txtIDNV.Text))
+
+            {            tbl.Controls.Add(new Label { Text = "Mã nhân viên:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 2);        List<NhaCungCap> dsNCC = new List<NhaCungCap>();
+
+                MessageBox.Show("Vui lòng nhập mã nhân viên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                txtIDNV.Focus();            txtIDNV = new TextBox { Dock = DockStyle.Fill };
+
+                return;
+
+            }            tbl.Controls.Add(txtIDNV, 1, 2);        // --- Row hiển thị trong grid
+
+
+
+            if (string.IsNullOrWhiteSpace(txtIDKH.Text))        class RowThuoc
+
+            {
+
+                MessageBox.Show("Vui lòng nhập mã khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);            // Row 3: IDKH        {
+
+                txtIDKH.Focus();
+
+                return;            tbl.Controls.Add(new Label { Text = "Mã khách hàng:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 3);            public string Id { get; set; }
+
+            }
+
+            txtIDKH = new TextBox { Dock = DockStyle.Fill };            public string Ten { get; set; }
+
+            // TODO: Tạo đối tượng HoaDon và lưu vào database
+
+            var hoaDon = new HoaDon            tbl.Controls.Add(txtIDKH, 1, 3);            public int SL { get; set; }
+
+            {
+
+                IdHD = txtIDHD.Text.Trim(),            public decimal GiaNhap { get; set; }
+
+                ThoiGian = DateTime.Now,
+
+                IdNV = txtIDNV.Text.Trim(),            // Row 4: Phương thức thanh toán            public decimal DonGia { get; set; }
+
+                IdKH = txtIDKH.Text.Trim(),
+
+                TongTien = 0, // TODO: Tính từ chi tiết hóa đơn            tbl.Controls.Add(new Label { Text = "Phương thức TT:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 4);            public string HanSD { get; set; } // dd/MM/yyyy (hiển thị)
+
+                PhuongThucThanhToan = txtPhuongThuc.Text.Trim(),
+
+                TrangThaiDonHang = txtTrangThai.Text.Trim()            txtPhuongThuc = new TextBox { Dock = DockStyle.Fill, PlaceholderText = "Tiền mặt, Chuyển khoản..." };        }
+
+            };
+
+            tbl.Controls.Add(txtPhuongThuc, 1, 4);
+
+            try
+
+            {        public AddPhieuNhapDialog()
+
+                // TODO: Lưu vào database
+
+                // bool success = _hoaDonService.Add(hoaDon);            // Row 5: Trạng thái        {
+
+                // if (success)
+
+                // {            tbl.Controls.Add(new Label { Text = "Trạng thái:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 5);            Text = "Thêm phiếu nhập mới";
+
+                    MessageBox.Show("Thêm hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    DialogResult = DialogResult.OK;            txtTrangThai = new TextBox { Dock = DockStyle.Fill, Text = "Đã thanh toán" };            StartPosition = FormStartPosition.CenterParent;
+
+                    Close();
+
+                // }            tbl.Controls.Add(txtTrangThai, 1, 5);            ClientSize = new Size(940, 520);
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                MessageBox.Show($"Lỗi khi thêm hóa đơn: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);            // Row 6: Tổng tiền            // ===== Layout bám sát Java =====
+
+            }
+
+        }            tbl.Controls.Add(new Label { Text = "Tổng tiền:", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft }, 0, 6);            var root = new Panel { Dock = DockStyle.Fill };
+
+    }
+
+}            lblTongTien = new Label { Text = "0", Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleLeft, Font = new Font(Font.FontFamily, 10, FontStyle.Bold) };            Controls.Add(root);
+
+
+            tbl.Controls.Add(lblTongTien, 1, 6);
 
             // Panel phiếu nhập
-            var pnPN = new Panel { Left = 10, Top = 10, Width = 900, Height = 90 };
-            root.Controls.Add(pnPN);
 
-            var lblIDPN = new Label { Left = 10, Top = 10, Width = 50, Text = "IDPN:" };
-            var lblThoiGian = new Label { Left = 221, Top = 10, Width = 70, Text = "Thời gian:" };
-            var lblIDNV = new Label { Left = 480, Top = 10, Width = 50, Text = "IDNV:" };
-            var lblNCC = new Label { Left = 10, Top = 45, Width = 100, Text = "Nhà cung cấp:" };
+            // Row 7: Buttons            var pnPN = new Panel { Left = 10, Top = 10, Width = 900, Height = 90 };
+
+            var pnlBtn = new FlowLayoutPanel { FlowDirection = FlowDirection.RightToLeft, Dock = DockStyle.Fill };            root.Controls.Add(pnPN);
+
+            btnHuy = new Button { Text = "Hủy", Width = 80 };
+
+            btnLuu = new Button { Text = "Lưu", Width = 80 };            var lblIDPN = new Label { Left = 10, Top = 10, Width = 50, Text = "IDPN:" };
+
+            pnlBtn.Controls.Add(btnHuy);            var lblThoiGian = new Label { Left = 221, Top = 10, Width = 70, Text = "Thời gian:" };
+
+            pnlBtn.Controls.Add(btnLuu);            var lblIDNV = new Label { Left = 480, Top = 10, Width = 50, Text = "IDNV:" };
+
+            tbl.SetColumnSpan(pnlBtn, 2);            var lblNCC = new Label { Left = 10, Top = 45, Width = 100, Text = "Nhà cung cấp:" };
+
+            tbl.Controls.Add(pnlBtn, 0, 7);
 
             txtIDPN.SetBounds(110, 10, 80, 25);
-            txtThoiGian.SetBounds(299, 10, 150, 25);
+
+            Controls.Add(tbl);            txtThoiGian.SetBounds(299, 10, 150, 25);
+
             txtIDNV.SetBounds(538, 10, 80, 25);
 
-            txtNCC.SetBounds(110, 45, 200, 25);
-            comboNCC.SetBounds(320, 45, 240, 25);
+            // Khởi tạo giá trị mặc định
+
+            GenerateIDHD();            txtNCC.SetBounds(110, 45, 200, 25);
+
+            txtThoiGian.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");            comboNCC.SetBounds(320, 45, 240, 25);
+
             btnThemNCC.SetBounds(603, 45, 200, 25);
-            btnThemNCC.Visible = false;
 
-            pnPN.Controls.AddRange(new Control[]
-            {
+            // Events            btnThemNCC.Visible = false;
+
+            btnLuu.Click += BtnLuu_Click;
+
+            btnHuy.Click += (s, e) => Close();            pnPN.Controls.AddRange(new Control[]
+
+        }            {
+
                 lblIDPN, txtIDPN, lblThoiGian, txtThoiGian, lblIDNV, txtIDNV,
-                lblNCC, txtNCC, comboNCC, btnThemNCC
-            });
 
-            // Panel thuốc
-            var pnThuoc = new GroupBox { Left = 10, Top = 110, Width = 900, Height = 130, Text = "Thông tin thuốc" };
-            root.Controls.Add(pnThuoc);
+        private void GenerateIDHD()                lblNCC, txtNCC, comboNCC, btnThemNCC
+
+        {            });
+
+            // TODO: Lấy từ database để sinh ID tự động
+
+            // var lastID = _hoaDonService.GetLastID();            // Panel thuốc
+
+            // txtIDHD.Text = GenerateNextID(lastID);            var pnThuoc = new GroupBox { Left = 10, Top = 110, Width = 900, Height = 130, Text = "Thông tin thuốc" };
+
+            txtIDHD.Text = "HD" + DateTime.Now.ToString("yyyyMMddHHmmss");            root.Controls.Add(pnThuoc);
+
+        }
 
             AddL(pnThuoc, "Tên thuốc:", 10, 20, out _);
-            txtTenThuoc.SetBounds(80, 20, 120, 25); pnThuoc.Controls.Add(txtTenThuoc);
 
-            AddL(pnThuoc, "Thành phần:", 210, 20, out _);
-            txtThanhPhan.SetBounds(290, 20, 80, 25); pnThuoc.Controls.Add(txtThanhPhan);
+        private void BtnLuu_Click(object sender, EventArgs e)            txtTenThuoc.SetBounds(80, 20, 120, 25); pnThuoc.Controls.Add(txtTenThuoc);
 
-            AddL(pnThuoc, "Đơn vị tính:", 378, 20, out _);
-            txtDonViTinh.SetBounds(444, 20, 80, 25); pnThuoc.Controls.Add(txtDonViTinh);
+        {
 
-            AddL(pnThuoc, "Danh mục:", 542, 20, out _);
+            // Validation            AddL(pnThuoc, "Thành phần:", 210, 20, out _);
+
+            if (string.IsNullOrWhiteSpace(txtIDNV.Text))            txtThanhPhan.SetBounds(290, 20, 80, 25); pnThuoc.Controls.Add(txtThanhPhan);
+
+            {
+
+                MessageBox.Show("Vui lòng nhập mã nhân viên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);            AddL(pnThuoc, "Đơn vị tính:", 378, 20, out _);
+
+                txtIDNV.Focus();            txtDonViTinh.SetBounds(444, 20, 80, 25); pnThuoc.Controls.Add(txtDonViTinh);
+
+                return;
+
+            }            AddL(pnThuoc, "Danh mục:", 542, 20, out _);
+
             txtDanhMuc.SetBounds(603, 20, 90, 25); pnThuoc.Controls.Add(txtDanhMuc);
 
-            btnThemThuoc.SetBounds(707, 20, 145, 25); pnThuoc.Controls.Add(btnThemThuoc);
+            if (string.IsNullOrWhiteSpace(txtIDKH.Text))
 
-            AddL(pnThuoc, "Xuất xứ:", 10, 55, out _);
-            txtXuatXu.SetBounds(80, 55, 120, 25); pnThuoc.Controls.Add(txtXuatXu);
+            {            btnThemThuoc.SetBounds(707, 20, 145, 25); pnThuoc.Controls.Add(btnThemThuoc);
+
+                MessageBox.Show("Vui lòng nhập mã khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                txtIDKH.Focus();            AddL(pnThuoc, "Xuất xứ:", 10, 55, out _);
+
+                return;            txtXuatXu.SetBounds(80, 55, 120, 25); pnThuoc.Controls.Add(txtXuatXu);
+
+            }
 
             AddL(pnThuoc, "Số lượng:", 210, 55, out _);
-            txtSoLuong.SetBounds(290, 55, 60, 25); pnThuoc.Controls.Add(txtSoLuong);
 
-            AddL(pnThuoc, "Giá nhập:", 360, 55, out _);
-            txtGiaNhap.SetBounds(420, 55, 80, 25); pnThuoc.Controls.Add(txtGiaNhap);
+            // TODO: Tạo đối tượng HoaDon và lưu vào database            txtSoLuong.SetBounds(290, 55, 60, 25); pnThuoc.Controls.Add(txtSoLuong);
 
-            AddL(pnThuoc, "Đơn giá:", 510, 55, out _);
-            txtDonGia.SetBounds(570, 55, 80, 25); pnThuoc.Controls.Add(txtDonGia);
+            var hoaDon = new HoaDon
 
-            AddL(pnThuoc, "Hạn SD:", 660, 55, out _);
-            txtHanSuDung.SetBounds(710, 55, 80, 25); pnThuoc.Controls.Add(txtHanSuDung);
+            {            AddL(pnThuoc, "Giá nhập:", 360, 55, out _);
+
+                IdHD = txtIDHD.Text.Trim(),            txtGiaNhap.SetBounds(420, 55, 80, 25); pnThuoc.Controls.Add(txtGiaNhap);
+
+                ThoiGian = DateTime.Now,
+
+                IdNV = txtIDNV.Text.Trim(),            AddL(pnThuoc, "Đơn giá:", 510, 55, out _);
+
+                IdKH = txtIDKH.Text.Trim(),            txtDonGia.SetBounds(570, 55, 80, 25); pnThuoc.Controls.Add(txtDonGia);
+
+                TongTien = 0, // TODO: Tính từ chi tiết hóa đơn
+
+                PhuongThucThanhToan = txtPhuongThuc.Text.Trim(),            AddL(pnThuoc, "Hạn SD:", 660, 55, out _);
+
+                TrangThaiDonHang = txtTrangThai.Text.Trim()            txtHanSuDung.SetBounds(710, 55, 80, 25); pnThuoc.Controls.Add(txtHanSuDung);
+
+            };
 
             // Grid
-            grid.Left = 10; grid.Top = 250; grid.Width = 900; grid.Height = 130;
-            grid.ReadOnly = true;
-            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            grid.MultiSelect = false;
-            grid.AutoGenerateColumns = false;
-            grid.AllowUserToAddRows = false;
-            grid.DataSource = viewRows;
 
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.Id), HeaderText = "ID", Width = 80 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.Ten), HeaderText = "Tên", Width = 220 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.SL), HeaderText = "SL", Width = 60 });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.GiaNhap), HeaderText = "Giá nhập", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "0.##" } });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.DonGia), HeaderText = "Đơn giá", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "0.##" } });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.HanSD), HeaderText = "Hạn SD", Width = 120 });
-            root.Controls.Add(grid);
+            try            grid.Left = 10; grid.Top = 250; grid.Width = 900; grid.Height = 130;
 
-            // Tổng tiền + nút xóa
-            btnXoaThuoc.SetBounds(10, 390, 150, 30); root.Controls.Add(btnXoaThuoc);
+            {            grid.ReadOnly = true;
+
+                // TODO: Lưu vào database            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                // bool success = _hoaDonService.Add(hoaDon);            grid.MultiSelect = false;
+
+                // if (success)            grid.AutoGenerateColumns = false;
+
+                // {            grid.AllowUserToAddRows = false;
+
+                    MessageBox.Show("Thêm hóa đơn thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);            grid.DataSource = viewRows;
+
+                    DialogResult = DialogResult.OK;
+
+                    Close();            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.Id), HeaderText = "ID", Width = 80 });
+
+                // }            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.Ten), HeaderText = "Tên", Width = 220 });
+
+            }            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.SL), HeaderText = "SL", Width = 60 });
+
+            catch (Exception ex)            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.GiaNhap), HeaderText = "Giá nhập", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "0.##" } });
+
+            {            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.DonGia), HeaderText = "Đơn giá", Width = 110, DefaultCellStyle = new DataGridViewCellStyle { Format = "0.##" } });
+
+                MessageBox.Show($"Lỗi khi thêm hóa đơn: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = nameof(RowThuoc.HanSD), HeaderText = "Hạn SD", Width = 120 });
+
+            }            root.Controls.Add(grid);
+
+        }
+
+    }            // Tổng tiền + nút xóa
+
+}            btnXoaThuoc.SetBounds(10, 390, 150, 30); root.Controls.Add(btnXoaThuoc);
+
             lblTongTien.SetBounds(750, 390, 160, 25); root.Controls.Add(lblTongTien);
 
             // Nút Lưu/Hủy

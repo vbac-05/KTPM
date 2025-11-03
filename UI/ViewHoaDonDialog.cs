@@ -8,7 +8,7 @@ using System.Windows.Forms;
 // - gui.ViewHoaDonDetailDialog.java  (header hóa đơn + bảng chi tiết 5 cột)
 // - gui.ViewChiTietHDDialog.java     (bảng chi tiết 3 cột + format đơn giá)
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class ViewHoaDonDialog : Form
     {

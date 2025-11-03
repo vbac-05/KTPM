@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 // TODO: đổi namespace dịch vụ/DTO theo project của bạn
-// using QLThuocWin.Services;
+// using QLThuocApp.Services;
 // using QLThuocWin.DTO;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class NhaCungCapPanel : UserControl
     {

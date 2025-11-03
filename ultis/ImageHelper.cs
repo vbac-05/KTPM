@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D; // Dùng cho InterpolationMode (scaling)
 using System.Drawing.Imaging;  // Dùng cho ImageFormat
 using System.IO;
 
-namespace Utils
+namespace QLThuocApp.Utils
 {
     /// <summary>
     /// Xử lý ảnh (đọc/ghi byte[] ↔ Image, tạo Image, scale ảnh...).

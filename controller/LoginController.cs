@@ -1,10 +1,10 @@
 using System;
 
 // TODO: đổi namespace theo project thật của bạn
-using QLThuocApp.dao;       // Chứa TaiKhoanDAO
-using QLThuocApp.entities;  // Chứa entity TaiKhoan
+using QLThuocApp.DAO;       // Chứa TaiKhoanDAO
+using QLThuocApp.Entities;  // Chứa entity TaiKhoan
 
-namespace QLThuocApp.controller
+namespace QLThuocApp.Controllers
 {
     /// <summary>
     /// LoginController.cs

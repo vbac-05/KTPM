@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace QLThuocWin.Utils
+namespace QLThuocApp.Utils
 {
     /// <summary>
     /// Các phương thức tiện ích C# tương đương với DateHelper của Java.

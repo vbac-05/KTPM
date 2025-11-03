@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp PhieuNhap
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp PhieuNhap
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// CRUD cơ bản cho bảng PhieuNhap (Phiên bản C# cho MySQL).

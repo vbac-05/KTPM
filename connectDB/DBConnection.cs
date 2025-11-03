@@ -1,37 +1,33 @@
-using System;
-using Microsoft.Data.SqlClient; // TODO: Nếu đổi DBMS (MySQL / PostgreSQL), đổi namespace này cho phù hợp.
+﻿using System;
+using MySql.Data.MySqlClient;
 
-namespace connectDB
+namespace QLThuocApp.ConnectDB
 {
     public static class DBConnection
     {
-        // TODO: Đổi thông tin kết nối (server, port, database, user, password) khi chuyển môi trường hoặc DB khác.
         private static readonly string CONNECTION_STRING =
-            "Server=localhost,1433;" +       // TODO: đổi host và port nếu dùng máy chủ khác (VD: 192.168.1.5,3306 cho MySQL)
-            "Database=QLTHUOC;" +            // TODO: đổi tên database nếu khác (VD: PharmacyDB)
-            "User Id=sa;" +                  // TODO: đổi username cho phù hợp (VD: root, admin, ...)
-            "Password=123123;" +             // TODO: đổi mật khẩu tương ứng
-            "Encrypt=False;";                // TODO: bật Encrypt=True nếu deploy production (SSL)
+            "Server=localhost;" +
+            "Port=3306;" +
+            "Database=QLTHUOC;" +
+            "User=root;" +
+            "Password=123123;" +
+            "SslMode=None;";
 
-        /// <summary>
-        /// Trả về một SqlConnection đã mở tới database.
-        /// ĐÂY là “đường ống” để DAO làm việc với DB.
-        /// </summary>
-        public static SqlConnection GetConnection()
+        public static MySqlConnection GetConnection()
         {
             try
             {
-                var conn = new SqlConnection(CONNECTION_STRING); // TODO: Nếu đổi sang MySQL, đổi sang MySqlConnection
+                var conn = new MySqlConnection(CONNECTION_STRING);
                 conn.Open();
                 return conn;
             }
-            catch (SqlException ex)
+            catch (MySqlException ex)
             {
-                Console.Error.WriteLine("Không thể kết nối SQL Server:");
-                Console.Error.WriteLine(ex);
+                Console.Error.WriteLine("Không thể kết nối MySQL Server:");
+                Console.Error.WriteLine($"Error Code: {ex.Number}");
+                Console.Error.WriteLine($"Message: {ex.Message}");
                 throw;
             }
         }
     }
 }
-

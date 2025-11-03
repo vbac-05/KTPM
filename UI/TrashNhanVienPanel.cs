@@ -7,7 +7,7 @@ using System.Windows.Forms;
 // TODO: nếu có DAO thật, thêm using tới namespace DAO của bạn
 // using QLThuocWin.DAO;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class TrashNhanVienPanel : UserControl
     {

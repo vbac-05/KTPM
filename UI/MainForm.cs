@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class MainForm : Form
     {

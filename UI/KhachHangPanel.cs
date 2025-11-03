@@ -4,10 +4,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-// using QLThuocWin.Models;    // TODO: ĐỔI nếu class KhachHang đã có trong Models
-// using QLThuocWin.Services;  // TODO: ĐỔI nếu bạn có Service/Repo thật
+// using QLThuocApp.Entities;    // TODO: ĐỔI nếu class KhachHang đã có trong Models
+// using QLThuocApp.Services;  // TODO: ĐỔI nếu bạn có Service/Repo thật
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     // ===== Nếu đã có entity KhachHang trong project, hãy xoá block class demo này =====
     public class KhachHang

@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 // TODO: đổi namespace/using cho đúng dự án thật (DAO/Repos)
-// using QLThuocWin.Services;
+// using QLThuocApp.Services;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class TrashHoaDonPanel : UserControl
     {

@@ -21,7 +21,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLThuocApp.Core.Models
+namespace QLThuocApp.Entities
 {
     [Table("ChiTietHoaDon")]
     public class ChiTietHoaDon

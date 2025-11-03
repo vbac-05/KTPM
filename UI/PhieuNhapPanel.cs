@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 // TODO: đổi namespace/using cho đúng dự án thật của bạn
-// using QLThuocWin.Services;
-// using QLThuocWin.DTO;
+// using QLThuocApp.Services;
+// using QLThuocApp.DTO;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class PhieuNhapPanel : UserControl
     {

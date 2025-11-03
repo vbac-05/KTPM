@@ -6,7 +6,7 @@
 // - Thuộc tính ràng buộc dữ liệu: dùng get;set; tự động
 // - Có thể để default = "" để tránh null trong binding
 
-namespace QLThuocWin.Models
+namespace QLThuocApp.Entities
 {
     /// <summary>
     /// Bản đồ 1-1 với bảng TaiKhoan:

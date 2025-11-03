@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp NhanVien
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp NhanVien
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// CRUD cho NhanVien và TaiKhoan (Phiên bản C# cho MySQL).

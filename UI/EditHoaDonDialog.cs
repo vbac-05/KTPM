@@ -18,9 +18,9 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using QLThuocWin.Models;
+using QLThuocApp.Entities;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class EditHoaDonDialog : Form
     {

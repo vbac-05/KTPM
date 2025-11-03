@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace Utils
+namespace QLThuocApp.Utils
 {
     /// <summary>
     /// Các phương thức tiện ích hiển thị thông báo bằng MessageBox.

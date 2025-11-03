@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     // CHANGED: Đặt đúng tên lớp để match Java: TrashPhieuNhapPanel (không phải TrashThuocPanel)
     public class TrashPhieuNhapPanel : UserControl

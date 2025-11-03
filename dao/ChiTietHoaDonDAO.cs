@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 // 1. Thay đổi thư viện: từ System.Data.SqlClient sang MySql.Data.MySqlClient
 using MySql.Data.MySqlClient; 
-using Entities; // Giả định bạn có namespace này cho lớp ChiTietHoaDon
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định bạn có namespace này cho lớp ChiTietHoaDon
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// DAO cho bảng dbo.ChiTietHoaDon (Phiên bản C# cho MySQL)

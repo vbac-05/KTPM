@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp HopDong
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp HopDong
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     public class HopDongDAO
     {

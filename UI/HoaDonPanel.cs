@@ -6,10 +6,10 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-// using QLThuocWin.Services; // TODO: ĐỔI: namespace Service/DAO thật của bạn
-using QLThuocWin.Models;        // TODO: ĐỔI: nếu entity ở namespace khác
+// using QLThuocApp.Services; // TODO: ĐỔI: namespace Service/DAO thật của bạn
+using QLThuocApp.Entities;        // TODO: ĐỔI: nếu entity ở namespace khác
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class HoaDonPanel : UserControl
     {

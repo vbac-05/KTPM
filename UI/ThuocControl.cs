@@ -5,10 +5,10 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 // TODO: đổi namespace/using cho đúng dự án thật của bạn
-// using QLThuocWin.Services;
+// using QLThuocApp.Services;
 // using QLThuocWin.DTO;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class ThuocControl : UserControl
     {

@@ -5,9 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 // TODO: đổi using/namespace nếu bạn đã có DAO thật
-// using QLThuocWin.Services;
+// using QLThuocApp.Services;
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class TrashNhaCungCapPanel : UserControl
     {

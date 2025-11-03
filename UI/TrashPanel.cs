@@ -3,7 +3,7 @@ using System.Windows.Forms;
 // TODO: thêm using tới namespace chứa các Trash*Panel của bạn (nếu khác)
 using QLThuocWin.UI; // giữ nguyên nếu các lớp con cùng namespace
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class TrashPanel : UserControl
     {

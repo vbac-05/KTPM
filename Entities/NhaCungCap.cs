@@ -20,7 +20,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLThuocApp.Core.Models
+namespace QLThuocApp.Entities
 {
     [Table("NhaCungCap")] // ← THÊM MỚI: tên bảng tương ứng trong CSDL
     public class NhaCungCap

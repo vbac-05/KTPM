@@ -16,7 +16,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLThuocApp.Core.Models
+namespace QLThuocApp.Entities
 {
     [Table("DonViTinh")] // ← THÊM MỚI: xác định tên bảng trong CSDL
     public class DonViTinh

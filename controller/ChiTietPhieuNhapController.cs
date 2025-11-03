@@ -1,11 +1,10 @@
 // File: controller/ChiTietPhieuNhapController.cs
-// Mục tiêu: chuyển dần từ phiên bản "demo" sang chuẩn namespace QLThuocWin.*
-// Đánh dấu các dòng cần sửa bằng comment TODO để dễ tìm và thay sau này.
+// Controller xử lý logic nghiệp vụ cho ChiTietPhieuNhap
 
-using dao;               // ❌ TODO: ĐỔI -> using QLThuocWin.DAO;
-using entities;          // ❌ TODO: ĐỔI -> using QLThuocWin.Models;
+using QLThuocApp.DAO;
+using QLThuocApp.Entities;
 
-namespace controller      // ❌ TODO: ĐỔI -> namespace QLThuocWin.Controller;
+namespace QLThuocApp.Controllers
 {
     public class ChiTietPhieuNhapController
     {

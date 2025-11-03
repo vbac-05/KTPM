@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 // TODO: chỉnh namespace dưới đây cho khớp solution của bạn
 using QLThuocApp.connectDB;      // DBConnection, DBCloseHelper nếu bạn cần dùng chỗ khác
-using QLThuocApp.dao;            // HoaDonDAO
-using QLThuocApp.entities;       // HoaDon, ChiTietHoaDon
+using QLThuocApp.DAO;            // HoaDonDAO
+using QLThuocApp.Entities;       // HoaDon, ChiTietHoaDon
 using QLThuocApp.controller;     // KhachHangController (có thể đổi namespace nếu tách riêng)
 
-namespace QLThuocApp.controller
+namespace QLThuocApp.Controllers
 {
     /// <summary>
     /// Controller = cầu nối giữa GUI và DAO.

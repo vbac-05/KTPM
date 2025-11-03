@@ -11,7 +11,7 @@
 // - TODO: Nếu bạn sửa DataGridView để bind "IdThuoc" & "GiaNhap" thay vì alias,
 //   hãy đổi DataPropertyName trong UI và có thể xóa hai alias bên dưới.
 
-namespace QLThuocWin.Models
+namespace QLThuocApp.Entities
 {
     public class ChiTietPhieuNhap
     {

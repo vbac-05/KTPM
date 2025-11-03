@@ -25,7 +25,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLThuocApp.Core.Models
+namespace QLThuocApp.Entities
 {
     [Table("HopDong")] // ← THÊM MỚI: chỉ định tên bảng tương ứng trong DB
     public class HopDong

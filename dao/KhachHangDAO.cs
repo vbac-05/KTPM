@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa lớp KhachHang
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa lớp KhachHang
 
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// CRUD cơ bản cho bảng KhachHang (Phiên bản C# cho MySQL).

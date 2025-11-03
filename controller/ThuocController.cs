@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 
 // TODO: chỉnh namespace này cho đúng với cấu trúc project thật
-using QLThuocApp.dao;       // Chứa ThuocDAO
-using QLThuocApp.entities;  // Chứa entity Thuoc
+using QLThuocApp.DAO;       // Chứa ThuocDAO
+using QLThuocApp.Entities;  // Chứa entity Thuoc
 
-namespace QLThuocApp.controller
+namespace QLThuocApp.Controllers
 {
     /// <summary>
     /// ThuocController.cs

@@ -4,10 +4,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-// using QLThuocWin.Services; // TODO: ĐỔI: namespace Service/Controller thật của bạn
-// using QLThuocWin.Models;   // TODO: ĐỔI: nếu entity HopDong ở namespace khác
+// using QLThuocApp.Services; // TODO: ĐỔI: namespace Service/Controller thật của bạn
+// using QLThuocApp.Entities;   // TODO: ĐỔI: nếu entity HopDong ở namespace khác
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class HopDong
     {

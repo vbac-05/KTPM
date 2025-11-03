@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using MySql.Data.MySqlClient; // Sử dụng thư viện MySQL
-using Entities; // Giả định namespace chứa các lớp HoaDon, ChiTietHoaDon
+using QLThuocApp.Entities;
+using QLThuocApp.ConnectDB; // Giả định namespace chứa các lớp HoaDon, ChiTietHoaDon
 // DBCloseHelper và các khối try-finally được thay thế bằng cấu trúc using(..)
-namespace DAO
+namespace QLThuocApp.DAO
 {
     /// <summary>
     /// CRUD cho bảng HoaDon (Phiên bản C# cho MySQL).

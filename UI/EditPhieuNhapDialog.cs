@@ -5,10 +5,10 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using QLThuocWin.Models;
-// using QLThuocWin.Services; // TODO: ĐỔI namespace Services/DAO thật của bạn
+using QLThuocApp.Entities;
+// using QLThuocApp.Services; // TODO: ĐỔI namespace Services/DAO thật của bạn
 
-namespace QLThuocWin.UI
+namespace QLThuocApp.UI
 {
     public class EditPhieuNhapDialog : Form
     {

@@ -3,7 +3,7 @@ using System.IO; // Để dùng StreamWriter, File...
 using System.Text; // Để dùng Encoding
 using System.Windows.Forms; // Để dùng DataGridView
 
-namespace QLThuocWin.Utils
+namespace QLThuocApp.Utils
 {
     /**
      * Lớp tiện ích C# để xuất dữ liệu.
