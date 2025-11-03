@@ -2,121 +2,245 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace QLThuocApp.UI
+namespace QLThuocWin.UI
 {
+    /// <summary>
+    /// Chuẩn hoá cách các Panel (UserControl) tải dữ liệu khi được hiển thị.
+    /// Các Panel nên implement ILoadable và viết hàm LoadData().
+    /// </summary>
+    public interface ILoadable
+    {
+        void LoadData();
+    }
+
     public class MainForm : Form
     {
         private readonly string _roleId;
         private readonly string _username;
-        private TabControl tabbed;
 
-        // TODO: Nếu bạn không muốn truyền username, có thể tạo overload MainForm(string roleId)
+        private TabControl _tabs = default!;
+        private StatusStrip _status = default!;
+        private ToolStripStatusLabel _statusUser = default!;
+        private ToolStripStatusLabel _statusRole = default!;
+        private ToolStripStatusLabel _statusTime = default!;
+        private Timer _clockTimer = default!;
+
         public MainForm(string roleId, string username)
         {
-            _roleId = roleId?.Trim() ?? string.Empty;
+            _roleId   = (roleId ?? "").Trim();
             _username = string.IsNullOrWhiteSpace(username) ? "User" : username.Trim();
 
-            Text = "Hệ thống Quản lý Nhà thuốc - " + _username; // TODO: đổi title nếu cần
+            Text = "Hệ thống Quản lý Nhà thuốc";
             StartPosition = FormStartPosition.CenterScreen;
             WindowState = FormWindowState.Maximized;
 
-            // (Tuỳ chọn) Icon cho form:
-            // TODO: this.Icon = Properties.Resources.app; 
-
-            BuildTopBar();                // Thanh trên cùng + nút Đăng xuất
-            BuildTabsByRole(_roleId);     // Thêm tab theo role (VT01 / VT02 / fallback)
+            BuildTopBar();
+            BuildTabsByRole(_roleId);
+            BuildStatusBar();
+            BuildClock();
         }
 
         private void BuildTopBar()
         {
-            var top = new Panel { Dock = DockStyle.Top, Height = 46, BackColor = Color.WhiteSmoke };
+            var top = new Panel
+            {
+                Dock = DockStyle.Top,
+                Height = 48,
+                BackColor = Color.WhiteSmoke
+            };
             Controls.Add(top);
 
-            // Nhãn chào
-            var lblHello = new Label
+            var lblTitle = new Label
             {
                 AutoSize = true,
-                Text = "Xin chào, " + _username,
+                Text = $"Xin chào, {_username}",
                 Font = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold),
-                Location = new Point(10, 14)
+                Location = new Point(12, 14)
             };
-            top.Controls.Add(lblHello);
+            top.Controls.Add(lblTitle);
 
-            // Nút Đăng xuất (góc phải)
+            var btnRefresh = new Button
+            {
+                Text = "Làm mới tab",
+                Height = 28,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right
+            };
+            btnRefresh.Click += (s, e) => RefreshCurrentTab();
+            top.Controls.Add(btnRefresh);
+
             var btnLogout = new Button
             {
                 Text = "Đăng xuất",
-                AutoSize = true,
+                Height = 28,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right
             };
-            // TODO: gắn icon nếu có resource: btnLogout.Image = Properties.Resources.logout; btnLogout.ImageAlign = ContentAlignment.MiddleLeft;
-            btnLogout.Click += (s, e) =>
-            {
-                // Đóng MainForm và mở lại LoginForm — giống Java
-                Close();
-                // TODO: nếu bạn có DI, có thể cần LoginForm(...) khác
-                new LoginForm().Show();
-            };
-            // canh phải sau khi Add vào top
+            btnLogout.Click += OnLogoutClicked;
             top.Controls.Add(btnLogout);
+
+            // canh phải
             top.Resize += (s, e) =>
             {
-                btnLogout.Location = new Point(top.Width - btnLogout.Width - 12, 10);
+                btnLogout.Left  = top.Width - btnLogout.Width - 12;
+                btnLogout.Top   = 10;
+                btnRefresh.Left = btnLogout.Left - btnRefresh.Width - 8;
+                btnRefresh.Top  = 10;
             };
-            // đặt vị trí lần đầu
-            btnLogout.Location = new Point(top.Width - btnLogout.Width - 12, 10);
         }
 
         private void BuildTabsByRole(string roleId)
         {
-            tabbed = new TabControl { Dock = DockStyle.Fill };
-            Controls.Add(tabbed);
+            _tabs = new TabControl { Dock = DockStyle.Fill };
+            _tabs.SelectedIndexChanged += (s, e) => TryLoadSelectedTab();
+            Controls.Add(_tabs);
 
-            // ===== Khởi tạo tất cả panel trước như Java =====
-            // Lưu ý: Trong phần C# trước đây bạn có class tên "ThuocControl".
-            // Để “match” Java, ta dùng ThuocPanel. 
-            // TODO: Nếu project của bạn vẫn là ThuocControl, đổi dòng dưới về new ThuocControl().
-            var thuocPanel       = new ThuocPanel();        // TODO: đổi sang class thật nếu tên khác
-            var nhanVienPanel    = new NhanVienPanel();     // TODO: đổi sang class thật nếu tên khác
-            var khachHangPanel   = new KhachHangPanel();    // TODO: đổi sang class thật nếu tên khác
-            var nhaCungCapPanel  = new NhaCungCapPanel();   // TODO: đổi sang class thật nếu tên khác
-            var hoaDonPanel      = new HoaDonPanel();       // TODO: đổi sang class thật nếu tên khác
-            var phieuNhapPanel   = new PhieuNhapPanel();    // TODO: đổi sang class thật nếu tên khác
-            var phanHoiPanel     = new PhanHoiPanel();      // TODO: đổi sang class thật nếu tên khác
-            var hopDongPanel     = new HopDongPanel();      // TODO: đổi sang class thật nếu tên khác
-            var trashPanel       = new TrashPanel();        // TODO: đổi sang class thật nếu tên khác
+            // ========== KHAI BÁO CÁC TAB THEO ROLE ==========
+            // Lưu ý: các class dưới đây phải tồn tại trong UI/
+            // Nếu bạn dùng ThuocControl thay vì ThuocPanel, chỉ cần đổi generic type tương ứng.
 
-            // ===== Map role giống Java =====
+            void AddAllTabsForAdmin()
+            {
+                AddTab<ThuocPanel>("Thuốc");
+                AddTab<NhanVienPanel>("Nhân viên");
+                AddTab<KhachHangPanel>("Khách hàng");
+                AddTab<NhaCungCapPanel>("Nhà cung cấp");
+                AddTab<HoaDonPanel>("Hóa đơn");
+                AddTab<PhieuNhapPanel>("Phiếu nhập");
+                AddTab<PhanHoiPanel>("Phản hồi");
+                AddTab<HopDongPanel>("Hợp đồng");
+                AddTab<TrashPanel>("Thùng rác");
+            }
+
+            void AddTabsForStaff()
+            {
+                AddTab<ThuocPanel>("Thuốc");
+                AddTab<KhachHangPanel>("Khách hàng");
+                AddTab<NhaCungCapPanel>("Nhà cung cấp");
+                AddTab<HoaDonPanel>("Hóa đơn");
+                AddTab<PhieuNhapPanel>("Phiếu nhập");
+                AddTab<PhanHoiPanel>("Phản hồi");
+                AddTab<TrashPanel>("Thùng rác");
+            }
+
             if (string.Equals(roleId, "VT01", StringComparison.OrdinalIgnoreCase))
-            {
-                // Admin: đủ 9 tab
-                tabbed.TabPages.Add("Thuốc").Controls.Add(thuocPanel);
-                tabbed.TabPages.Add("Nhân viên").Controls.Add(nhanVienPanel);
-                tabbed.TabPages.Add("Khách hàng").Controls.Add(khachHangPanel);
-                tabbed.TabPages.Add("Nhà cung cấp").Controls.Add(nhaCungCapPanel);
-                tabbed.TabPages.Add("Hóa đơn").Controls.Add(hoaDonPanel);
-                tabbed.TabPages.Add("Phiếu nhập").Controls.Add(phieuNhapPanel);
-                tabbed.TabPages.Add("Phản hồi").Controls.Add(phanHoiPanel);
-                tabbed.TabPages.Add("Hợp đồng").Controls.Add(hopDongPanel);
-                tabbed.TabPages.Add("Thùng rác").Controls.Add(trashPanel);
-            }
+                AddAllTabsForAdmin();
             else if (string.Equals(roleId, "VT02", StringComparison.OrdinalIgnoreCase))
-            {
-                // Nhân viên: 7 tab (không “Nhân viên”, “Hợp đồng”? — theo Java bạn đã ẩn HĐ, có “Thùng rác”)
-                tabbed.TabPages.Add("Thuốc").Controls.Add(thuocPanel);
-                tabbed.TabPages.Add("Khách hàng").Controls.Add(khachHangPanel);
-                tabbed.TabPages.Add("Nhà cung cấp").Controls.Add(nhaCungCapPanel);
-                tabbed.TabPages.Add("Hóa đơn").Controls.Add(hoaDonPanel);
-                tabbed.TabPages.Add("Phiếu nhập").Controls.Add(phieuNhapPanel);
-                tabbed.TabPages.Add("Phản hồi").Controls.Add(phanHoiPanel);
-                tabbed.TabPages.Add("Thùng rác").Controls.Add(trashPanel);
-            }
+                AddTabsForStaff();
             else
             {
-                // Fallback: tránh UI trắng — giống Java: ít nhất “Thuốc”, “Khách hàng”
-                tabbed.TabPages.Add("Thuốc").Controls.Add(thuocPanel);
-                tabbed.TabPages.Add("Khách hàng").Controls.Add(khachHangPanel);
+                // Fallback (không rõ role): ít nhất cho hiện 2 tab cơ bản
+                AddTab<ThuocPanel>("Thuốc");
+                AddTab<KhachHangPanel>("Khách hàng");
             }
+        }
+
+        /// <summary>
+        /// Tạo 1 TabPage chứa 1 UserControl kiểu T (Dock=Fill).
+        /// Nếu type T không tồn tại, sẽ tạo tab báo lỗi để bạn dễ phát hiện.
+        /// </summary>
+        private void AddTab<T>(string title) where T : Control, new()
+        {
+            var page = new TabPage(title);
+            try
+            {
+                var content = new T { Dock = DockStyle.Fill };
+                page.Controls.Add(content);
+            }
+            catch (Exception ex)
+            {
+                page.Controls.Add(new TextBox
+                {
+                    Multiline = true,
+                    ReadOnly = true,
+                    Dock = DockStyle.Fill,
+                    Text = $"Không thể khởi tạo {typeof(T).Name}.\r\n" +
+                           $"Hãy kiểm tra class trong UI/ và namespace.\r\n\r\nChi tiết:\r\n{ex}"
+                });
+            }
+            _tabs.TabPages.Add(page);
+        }
+
+        private void TryLoadSelectedTab()
+        {
+            if (_tabs.SelectedTab == null) return;
+            if (_tabs.SelectedTab.Controls.Count == 0) return;
+
+            var content = _tabs.SelectedTab.Controls[0];
+            if (content is ILoadable loadable)
+            {
+                try { loadable.LoadData(); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi tải dữ liệu tab \"{_tabs.SelectedTab.Text}\":\n{ex.Message}",
+                        "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void RefreshCurrentTab() => TryLoadSelectedTab();
+
+        private void BuildStatusBar()
+        {
+            _status = new StatusStrip();
+            _statusUser = new ToolStripStatusLabel($"User: {_username}");
+            _statusRole = new ToolStripStatusLabel($"Role: {_roleId}");
+            _statusTime = new ToolStripStatusLabel(DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy"));
+
+            _status.Items.Add(_statusUser);
+            _status.Items.Add(new ToolStripStatusLabel("|"));
+            _status.Items.Add(_statusRole);
+            _status.Items.Add(new ToolStripStatusLabel("|"));
+            _status.Items.Add(_statusTime);
+
+            Controls.Add(_status);
+        }
+
+        private void BuildClock()
+        {
+            _clockTimer = new Timer { Interval = 1000 };
+            _clockTimer.Tick += (s, e) => _statusTime.Text = DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy");
+            _clockTimer.Start();
+        }
+
+        private void OnLogoutClicked(object? sender, EventArgs e)
+        {
+            // Quy trình an toàn:
+            // 1) Ẩn MainForm hiện tại
+            // 2) Mở LoginForm như dialog (nếu có)
+            // 3) Nếu login thành công => mở MainForm mới; nếu huỷ => đóng app
+
+            this.Hide();
+            try
+            {
+                using (var login = new LoginForm()) // Nếu chưa có LoginForm, hãy tạo/đổi class name đúng
+                {
+                    var result = login.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        var mf = new MainForm(login.RoleId, login.Username);
+                        mf.FormClosed += (_, __) => this.Close(); // đóng main cũ khi main mới đóng
+                        mf.Show();
+                        return;
+                    }
+                }
+            }
+            catch
+            {
+                // Nếu chưa có LoginForm hoặc lỗi, fallback: thoát hẳn
+            }
+            this.Close();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            // Lazy load cho tab đầu tiên
+            TryLoadSelectedTab();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            Application.Exit(); // đảm bảo thoát process khi form chính đóng
         }
     }
 }
